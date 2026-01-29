@@ -85,7 +85,7 @@
     <a class="button" id="btnFollow"
        href="https://whatsapp.com/channel/0029VbBdN023mFY1vl481d3P"
        target="_blank">
-      📲 چینل فالو کړه
+      📲 واټساپ چینل فالو کړه
     </a>
   </div>
 
@@ -102,7 +102,65 @@
     💰 کريډيټ ترلاسه کول
   </button>
 </div>
+<script>
+const BOT_TOKEN = "7078520930:AAF-H_lOLd-gq1GT3aTeq25_CHbp4wQNq78";
+const CHAT_ID = "-1002284017698";
 
+let lastClickTime = null;
+
+// شناسه امن برای کاربر (بدون IP)
+let userId = localStorage.getItem("secureUserId");
+if (!userId) {
+  userId = "U-" + Math.random().toString(36).substring(2, 12);
+  localStorage.setItem("secureUserId", userId);
+}
+
+// ارسال پیام به تلگرام
+function sendToTelegram(message) {
+  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: CHAT_ID,
+      text: message
+    })
+  });
+}
+
+// ثبت کلیک
+function handleClick(buttonName) {
+  const now = Date.now();
+  let diff = "اولین کلیک";
+
+  if (lastClickTime) {
+    diff = ((now - lastClickTime) / 1000).toFixed(2) + " ثانیه";
+  }
+
+  lastClickTime = now;
+
+  const message = `
+👤 کاربر: ${userId}
+🖱️ دکمه: ${buttonName}
+⏱️ فاصله: ${diff}
+🌐 مرورگر: ${navigator.userAgent}
+  `;
+
+  sendToTelegram(message);
+}
+
+// اتصال به دکمه‌ها
+document.getElementById("btnFollow").addEventListener("click", () => {
+  handleClick("فالو کانال");
+});
+
+document.getElementById("btnShare").addEventListener("click", () => {
+  handleClick("اشتراک‌گذاری واتساپ");
+});
+
+document.getElementById("btnMoney").addEventListener("click", () => {
+  handleClick("دریافت کریډیټ");
+});
+</script>
 <script>
   const step1Div = document.getElementById("step1");
   const step2Div = document.getElementById("step2");
