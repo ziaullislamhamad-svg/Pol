@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>100 افغانی فری 😄</title>
+  <title>100 افغانی 😄</title>
 
   <style>
     body {
@@ -36,75 +36,113 @@
       padding: 15px;
       border-radius: 12px;
       margin: 15px 0;
-      font-size: 16px;
+      transition: 0.3s;
     }
 
-    a.button {
+    .step.done {
+      background: #4caf50;
+      color: white;
+    }
+
+    a.button, button {
       display: block;
+      width: 100%;
       margin: 12px 0;
       padding: 12px;
       border-radius: 30px;
-      text-decoration: none;
       font-weight: bold;
+      border: none;
+      cursor: pointer;
       color: white;
+      text-decoration: none;
       background: #25D366;
       transition: 0.3s;
     }
 
-    a.button:hover {
+    a.button:hover, button:hover {
       transform: scale(1.05);
-      background: #1ebe5d;
     }
 
-    .share {
-      background: #128C7E;
-    }
+    .share { background: #128C7E; }
+    .money { background: #ff9800; color: #000; }
 
-    .joke {
-      margin-top: 20px;
-      font-size: 18px;
-    }
-
-    .emoji {
-      font-size: 32px;
-    }
+    .emoji { font-size: 32px; }
   </style>
 </head>
 <body>
 
-  <div class="card">
-    <div class="emoji">💸😄</div>
-    <h1>100 افغانی کریډیټ فری!</h1>
+<div class="card">
+  <div class="emoji">💸😄</div>
+  <h1>100 افغانی کریډیټ</h1>
 
-    <p>
-      که غواړې <b>100 افغانی کریډیټ</b> ترلاسه کړې،
-      نو دا <b>2 اسانه قدمه</b> تعقیب کړه 👇
-    </p>
+  <p>
+    که غواړې 100 افغانی ترلاسه کړې،
+    نو دا 2 قدمه تعقیب کړه 👇
+  </p>
 
-    <div class="step">
-      <b>قدم 1️⃣</b><br>
-      دا چینل فالو کړه (بې له فالو کار نه کېږي 🤭)
-      <a class="button" href="https://whatsapp.com/channel/0029VbBdN023mFY1vl481d3P" target="_blank">
-        📲 چینل فالو کړه
-      </a>
-    </div>
-
-    <div class="step">
-      <b>قدم 2️⃣</b><br>
-      دا لینک په <b>10 واتساپ ګروپونو</b> یا ملګرو ته واستوه 😜
-      <a class="button share"
-         href="https://wa.me/?text=😄%20واوره!%20100%20افغانی%20فری%20کریډیټ!%20دا%20سایټ%20وګوره👇"
-         target="_blank">
-        📤 په واتساپ کې شریک کړه
-      </a>
-    </div>
-
-    <div class="joke">
-      😂😂😂<br>
-      اوس لاړ شه!<br>
-      <b>ګنګس پیسه مفت نه ده 🤭</b>
-    </div>
+  <div class="step" id="step1">
+    <b>قدم 1️⃣</b>
+    <a class="button" id="btnFollow"
+       href="https://whatsapp.com/channel/0029VbBdN023mFY1vl481d3P"
+       target="_blank">
+      📲 چینل فالو کړه
+    </a>
   </div>
+
+  <div class="step" id="step2">
+    <b>قدم 2️⃣</b>
+    <a class="button share" id="btnShare"
+       href="https://wa.me/?text=😄%20100%20افغانی%20فری!%20دا%20سایټ%20وګوره👇"
+       target="_blank">
+      📤 په واتساپ کې شریک کړه
+    </a>
+  </div>
+
+  <button class="money" id="btnMoney">
+    💰 پیسه واخله
+  </button>
+</div>
+
+<script>
+  const step1Div = document.getElementById("step1");
+  const step2Div = document.getElementById("step2");
+  const btnMoney = document.getElementById("btnMoney");
+
+  // بارگذاری وضعیت مرحله‌ها از localStorage
+  let step1Done = localStorage.getItem("step1Done") === "true";
+  let step2Done = localStorage.getItem("step2Done") === "true";
+
+  // اگر مرحله‌ها قبلاً انجام شده، رنگ سبز شود
+  if(step1Done) step1Div.classList.add("done");
+  if(step2Done) step2Div.classList.add("done");
+
+  // قدم 1
+  document.getElementById("btnFollow").addEventListener("click", (e) => {
+    e.preventDefault();
+    step1Done = true;
+    localStorage.setItem("step1Done", "true"); // ذخیره در مرورگر
+    step1Div.classList.add("done");
+    window.open(e.currentTarget.href, "_blank");
+  });
+
+  // قدم 2
+  document.getElementById("btnShare").addEventListener("click", (e) => {
+    e.preventDefault();
+    step2Done = true;
+    localStorage.setItem("step2Done", "true"); // ذخیره در مرورگر
+    step2Div.classList.add("done");
+    window.open(e.currentTarget.href, "_blank");
+  });
+
+  // گرفتن پول
+  btnMoney.addEventListener("click", () => {
+    if(step1Done && step2Done){
+      alert("😂 پیسي خو څه مفته نه ده ځه لاړ شه ګنګسه خو هغه لينکونه دې چې وليږل ډيليټ يې نه کړي🤭");
+    } else {
+      alert("❗ اول مراحل مکمل کړه");
+    }
+  });
+</script>
 
 </body>
 </html>
