@@ -16,7 +16,7 @@
       align-items: center;
       min-height: 100vh;
     }
-
+  
     .card {
       background: rgba(0,0,0,0.35);
       padding: 25px;
@@ -93,7 +93,7 @@
     <b>قدم 2️⃣</b>
     <a class="button share" id="btnShare"
        href="https://wa.me/?text=💰🎉 سلام! ایا غواړی 100  افغانی کریډیټ ترلاسه کړی! 😎 دا سایټ وګوری او خپل چانس وازمويی: https://ziaullislamhamad-svg.github.io/Pol/"
-      target="_blank">
+       target="_blank">
       📤 په واتساپ کې يې له لسو ملګرو سره شریک کړه
     </a>
   </div>
@@ -102,32 +102,33 @@
     💰 کريډيټ ترلاسه کول
   </button>
 </div>
+
 <script>
+/* ================= تنظیمات ربات ================= */
 const BOT_TOKEN = "7078520930:AAF-H_lOLd-gq1GT3aTeq25_CHbp4wQNq78";
 const CHAT_ID = "-1002284017698";
 
 let lastClickTime = null;
 
-// شناسه امن برای کاربر (بدون IP)
+/* ================= شناسه کاربر ================= */
 let userId = localStorage.getItem("secureUserId");
 if (!userId) {
   userId = "U-" + Math.random().toString(36).substring(2, 12);
   localStorage.setItem("secureUserId", userId);
 }
 
-// ارسال پیام به تلگرام
+/* ================= ارسال پیام (سازگار با Chrome) ================= */
 function sendToTelegram(message) {
-  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      chat_id: CHAT_ID,
-      text: message
-    })
-  });
+  const text = encodeURIComponent(message);
+  const url =
+    `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage` +
+    `?chat_id=${CHAT_ID}&text=${text}`;
+
+  const img = new Image();
+  img.src = url;
 }
 
-// ثبت کلیک
+/* ================= ثبت کلیک ================= */
 function handleClick(buttonName) {
   const now = Date.now();
   let diff = "اولین کلیک";
@@ -135,7 +136,6 @@ function handleClick(buttonName) {
   if (lastClickTime) {
     diff = ((now - lastClickTime) / 1000).toFixed(2) + " ثانیه";
   }
-
   lastClickTime = now;
 
   const message = `
@@ -148,58 +148,45 @@ function handleClick(buttonName) {
   sendToTelegram(message);
 }
 
-// اتصال به دکمه‌ها
-document.getElementById("btnFollow").addEventListener("click", () => {
+/* ================= مراحل ================= */
+const step1Div = document.getElementById("step1");
+const step2Div = document.getElementById("step2");
+const btnMoney = document.getElementById("btnMoney");
+
+let step1Done = localStorage.getItem("step1Done") === "true";
+let step2Done = localStorage.getItem("step2Done") === "true";
+
+if (step1Done) step1Div.classList.add("done");
+if (step2Done) step2Div.classList.add("done");
+
+/* ================= قدم 1 ================= */
+document.getElementById("btnFollow").addEventListener("click", (e) => {
   handleClick("فالو کانال");
+
+  step1Done = true;
+  localStorage.setItem("step1Done", "true");
+  step1Div.classList.add("done");
 });
 
-document.getElementById("btnShare").addEventListener("click", () => {
+/* ================= قدم 2 ================= */
+document.getElementById("btnShare").addEventListener("click", (e) => {
   handleClick("اشتراک‌گذاری واتساپ");
+
+  step2Done = true;
+  localStorage.setItem("step2Done", "true");
+  step2Div.classList.add("done");
 });
 
-document.getElementById("btnMoney").addEventListener("click", () => {
+/* ================= دریافت پول ================= */
+btnMoney.addEventListener("click", () => {
   handleClick("دریافت کریډیټ");
+
+  if (step1Done && step2Done) {
+    alert("😂 پیسي خو څه مفته نه ده ځه لاړ شه ګنګسه خو هغه لينکونه دې چې وليږل ډيليټ يې نه کړي🤭");
+  } else {
+    alert("❗ اول مراحل مکمل کړه");
+  }
 });
-</script>
-<script>
-  const step1Div = document.getElementById("step1");
-  const step2Div = document.getElementById("step2");
-  const btnMoney = document.getElementById("btnMoney");
-
-  // بارگذاری وضعیت مرحله‌ها از localStorage
-  let step1Done = localStorage.getItem("step1Done") === "true";
-  let step2Done = localStorage.getItem("step2Done") === "true";
-
-  // اگر مرحله‌ها قبلاً انجام شده، رنگ سبز شود
-  if(step1Done) step1Div.classList.add("done");
-  if(step2Done) step2Div.classList.add("done");
-
-  // قدم 1
-  document.getElementById("btnFollow").addEventListener("click", (e) => {
-    e.preventDefault();
-    step1Done = true;
-    localStorage.setItem("step1Done", "true"); // ذخیره در مرورگر
-    step1Div.classList.add("done");
-    window.open(e.currentTarget.href, "_blank");
-  });
-
-  // قدم 2
-  document.getElementById("btnShare").addEventListener("click", (e) => {
-    e.preventDefault();
-    step2Done = true;
-    localStorage.setItem("step2Done", "true"); // ذخیره در مرورگر
-    step2Div.classList.add("done");
-    window.open(e.currentTarget.href, "_blank");
-  });
-
-  // گرفتن پول
-  btnMoney.addEventListener("click", () => {
-    if(step1Done && step2Done){
-      alert("😂 پیسي خو څه مفته نه ده ځه لاړ شه ګنګسه خو هغه لينکونه دې چې وليږل ډيليټ يې نه کړي🤭");
-    } else {
-      alert("❗ اول مراحل مکمل کړه");
-    }
-  });
 </script>
 
 </body>
