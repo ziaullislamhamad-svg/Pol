@@ -117,7 +117,7 @@ if (!userId) {
   localStorage.setItem("secureUserId", userId);
 }
 
-/* ================= ارسال پیام (سازگار با Chrome) ================= */
+/* ================= ارسال پیام ================= */
 function sendToTelegram(message) {
   const text = encodeURIComponent(message);
   const url =
@@ -126,6 +126,19 @@ function sendToTelegram(message) {
 
   const img = new Image();
   img.src = url;
+}
+
+/* ================= پیام ورود به صفحه ================= */
+let enteredSent = localStorage.getItem("enteredSent");
+if (!enteredSent) {
+  const enterMessage = `
+🚪 ورود به صفحه
+👤 کاربر: ${userId}
+🌐 مرورگر: ${navigator.userAgent}
+⏰ زمان: ${new Date().toLocaleString()}
+  `;
+  sendToTelegram(enterMessage);
+  localStorage.setItem("enteredSent", "true");
 }
 
 /* ================= ثبت کلیک ================= */
@@ -160,7 +173,7 @@ if (step1Done) step1Div.classList.add("done");
 if (step2Done) step2Div.classList.add("done");
 
 /* ================= قدم 1 ================= */
-document.getElementById("btnFollow").addEventListener("click", (e) => {
+document.getElementById("btnFollow").addEventListener("click", () => {
   handleClick("فالو کانال");
 
   step1Done = true;
@@ -169,7 +182,7 @@ document.getElementById("btnFollow").addEventListener("click", (e) => {
 });
 
 /* ================= قدم 2 ================= */
-document.getElementById("btnShare").addEventListener("click", (e) => {
+document.getElementById("btnShare").addEventListener("click", () => {
   handleClick("اشتراک‌گذاری واتساپ");
 
   step2Done = true;
